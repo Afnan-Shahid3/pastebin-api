@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Paste
 from .serializers import PasteSerializer
 from rest_framework import viewsets
@@ -6,6 +6,7 @@ from rest_framework import viewsets
 from django.db.models import Q
 from django.http import Http404
 from django.utils import timezone
+from django.http import HttpResponse
 
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -57,5 +58,17 @@ class PasteModelViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user = self.request.user)
 
+
+
+def raw_paste_view(request, slug):
+    paste = get_object_or_404(Paste, slug = slug)
+
+    if paste.is_expired:
+        raise Http404
+
+    if paste.is_private and paste.user != request.user:
+        raise Http404
+
+    return HttpResponse(paste.content, content_type = 'text/plain')
 
 
