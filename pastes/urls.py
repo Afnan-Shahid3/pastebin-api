@@ -8,4 +8,5 @@ router.register('pastes', views.PasteModelViewSet, basename='pastes')
 
 urlpatterns = [
     path('api/', include(router.urls)),
+    path('login/', views.login_api),
 ]

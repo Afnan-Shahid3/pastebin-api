@@ -4,12 +4,14 @@ from .utils import generate_unique_slug
 from django.utils import timezone
 # Create your models here.
 
+
 class Paste(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='paste', null = True, blank = True)
     content = models.CharField(max_length = 100)
     slug = models.CharField(max_length=10, unique = True, db_index = True)
     created_at = models.DateTimeField(auto_now_add = True)
     expires_at = models.DateTimeField(null=True, blank=True)
+    is_private = models.BooleanField(default = False)
 
     def save(self, *args, **kwargs):
         if not self.slug:
