@@ -27,7 +27,6 @@ staticfiles/
 .DS_Store
 Thumbs.db
 
-
-*/migrations/*.py
-*/migrations/__init__.py
+# Docker volumes (if you add persistent Postgres storage later)
+postgres_data/
 EOF
